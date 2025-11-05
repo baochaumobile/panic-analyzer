@@ -1,0 +1,44 @@
+{
+  "name": "panic-analyzer-bcm",
+  "version": "1.0.0",
+  "description": "AI Tool for Panic Log Analysis by Bảo Châu Mobile",
+  "author": "Bảo Châu Mobile",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --publish never"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.baochaumobile.panicanalyzer",
+    "productName": "Panic Analyzer – Bảo Châu Mobile",
+    "files": [
+      "main.js",
+      "preload.js",
+      "updater.js",
+      "icons/*",
+      "../backend/**/*",
+      "../frontend/dist/**/*"
+    ],
+    "mac": {
+      "target": ["dmg"],
+      "icon": "icons/icon.icns"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "icons/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Panic Analyzer",
+      "artifactName": "PanicAnalyzer_Setup_${version}.${ext}"
+    }
+  }
+}

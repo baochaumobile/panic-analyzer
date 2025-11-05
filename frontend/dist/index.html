@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Panic Analyzer – Bảo Châu Mobile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .dark {
+      background: #111;
+      color: #f1f1f1;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      background-color: #222;
+      color: white;
+      cursor: pointer;
+      margin-right: 5px;
+      transition: 0.2s;
+    }
+    .btn:hover {
+      background-color: #555;
+    }
+    pre {
+      background-color: rgba(0,0,0,0.1);
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 15px;
+      max-height: 500px;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Panic Analyzer – Bảo Châu Mobile</h1>
+  <p><b>AI Tool for Panic Log Analysis by Bảo Châu Mobile</b></p>
+
+  <input type="file" id="file" accept=".ips,.txt" />
+  <button id="an" class="btn">Phân tích</button>
+  <button id="up" class="btn" style="background-color:#0066ff">Cập nhật Signatures</button>
+
+  <pre id="out"></pre>
+
+  <script>
+    async function refreshTheme() {
+      const theme = await window.panicAPI.getSystemTheme();
+      if (theme === "dark") document.body.classList.add("dark");
+      else document.body.classList.remove("dark");
+    }
+    refreshTheme();
+
+    document.getElementById("an").onclick = async () => {
+      const file = document.getElementById("file").files[0];
+      if (!file) return alert("Vui lòng chọn file panic log!");
+      const result = await window.panicAPI.analyze(file.path);
+      document.getElementById("out").innerText = JSON.stringify(result, null, 2);
+    };
+
+    document.getElementById("up").onclick = async () => {
+      const res = await window.updateAPI.checkUpdate();
+      alert(res.updated ? `✅ Đã cập nhật signatures (${res.version})` : `⚠️ ${res.reason || res.error}`);
+    };
+  </script>
+</body>
+</html>
